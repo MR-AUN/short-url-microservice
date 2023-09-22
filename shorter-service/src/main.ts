@@ -17,13 +17,14 @@ async function bootstrap() {
 
   
   // * set cors
-  const whitelist = ["http://localhost:3000", "http://127.0.0.1:3000"];
+  const whitelist = ["http://aunshorter.vercel.app", "http//localhost:3000"];
 
   app.enableCors({
     origin: (origin, callback) => {
       const isWhitelisted = whitelist.includes(origin)
       callback(null, isWhitelisted);
-    }
+    },
+    credentials: true,
   })
   
   app.connectMicroservice({
