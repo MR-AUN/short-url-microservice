@@ -13,14 +13,14 @@ import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     UsersModule,
-    JwtModule.registerAsync(JwtModule.registerAsync({
+    JwtModule.registerAsync({
       global: true,
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
 
       }),
       inject: [ConfigService]
-    })),
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({

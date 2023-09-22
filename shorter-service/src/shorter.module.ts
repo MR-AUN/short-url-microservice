@@ -5,23 +5,32 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Shorter, ShorterSchema } from './schema/shorter.schema';
 import { ShorterRepository } from './shorter.repository';
 import { JwtGuard } from './common/guards';
-import { APP_GUARD} from '@nestjs/core';
+import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategy';
+import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
     MongooseModule.forRootAsync({
-      imports: [ConfigModule], 
+      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI'), 
+        uri: configService.get<string>('MONGODB_URI'),
       }),
-      inject: [ConfigService], 
+      inject: [ConfigService],
     }),
-  MongooseModule.forFeature([{ name: Shorter.name, schema: ShorterSchema }]),
-  ConfigModule.forRoot({
-    isGlobal: true
-  }),
-],
+    MongooseModule.forFeature([{ name: Shorter.name, schema: ShorterSchema }]),
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
+    JwtModule.registerAsync({
+      global: true,
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+
+      }),
+      inject: [ConfigService]
+    }),
+  ],
   controllers: [ShorterController],
   providers: [
     ShorterService,
