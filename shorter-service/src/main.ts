@@ -23,8 +23,7 @@ async function bootstrap() {
     origin: (origin, callback) => {
       const isWhitelisted = whitelist.includes(origin)
       callback(null, isWhitelisted);
-    },
-    credentials: true,
+    }
   })
   
   app.connectMicroservice({
