@@ -1,52 +1,21 @@
 # FROM node:alpine As development
-FROM node:18-alpine  As development
+FROM node:18 As development
 
-# WORKDIR /usr/src/app
+RUN apt-get update && apt-get install -y openssl
 
-# # COPY package*.json ./
-# COPY --chown=node:node package*.json ./
-
-
-# # RUN npm install
-# RUN npm ci
-
-# # COPY . .
-
-# COPY --chown=node:node . .
-# # add new
-# USER node
-
-# RUN mkdir -p /usr/src/app && chown -R node:node /usr/src/app
 WORKDIR /usr/src/app
 
+
 COPY package*.json ./
-# COPY --chown=node:node package*.json ./
-RUN npm install -g npm@10.0.0
-RUN npm install -g @nestjs/cli
-
-# USER node
+RUN npm install -g npm@10.1.0
 RUN npm install
-# RUN npm ci
 
-COPY . .
+COPY  . .
 # COPY --chown=node:node . .
 
 
 RUN npm run build user
 
-FROM node:alpine as production
-
-ARG NODE_ENV=production
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN npm install --only=production
-
-COPY . .
-
-COPY --from=development /usr/src/app/dist ./dist
 
 CMD ["node", "dist/apps/user/main"]
 
