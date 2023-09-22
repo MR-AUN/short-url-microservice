@@ -33,8 +33,7 @@ export class AuthsService {
       const accessToken = await this.signToken({ email: newUser.email, sub: newUser.user_id })
 
       res.cookie("token", accessToken, { 
-        httpOnly: false,
-        domain: 'localhost'
+        httpOnly: false
       })
       return { accessToken }
     } catch (error) {
@@ -58,11 +57,8 @@ export class AuthsService {
         throw new HttpException('Password not match.', HttpStatus.BAD_REQUEST);
 
       const accessToken = await this.signToken({ email: user.email, sub: user.user_id })
-      res.cookie("token", accessToken, {
-        // secure: true, 
+      res.cookie("token", accessToken, { 
         httpOnly: false,
-        // sameSite: 'none',
-        domain: 'localhost'
       })
       return { accessToken }
     } catch (error) {
