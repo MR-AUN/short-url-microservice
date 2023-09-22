@@ -1,0 +1,32 @@
+version: "3"
+services:
+  user:
+    container_name: user-service
+
+    restart: always
+    build:
+      context: ./user-service
+      dockerfile: ./Dockerfile
+    command: npm run start:dev user
+    ports:
+      - '8001:8001'
+    env_file:
+      - ./user-service/.env
+    volumes:
+      - ./user-service:/usr/src/app
+      - /usr/src/app/node_modules
+  shorter:
+    container_name: shorter-service
+
+    restart: always
+    build:
+      context: ./shorter-service
+      dockerfile: ./Dockerfile
+    command: npm run start:dev shorter
+    ports:
+      - '8002:8002'
+    env_file:
+      - ./shorter-service/.env
+    volumes:
+      - ./shorter-service:/usr/src/app
+      - /usr/src/app/node_modules
