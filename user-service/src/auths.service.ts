@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from 'src/interfaces';
 import { JwtPayload } from 'src/interfaces/jwt-payload.interface';
 import { UsersRepository } from './users/users.repository';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthsService {
@@ -19,7 +20,7 @@ export class AuthsService {
     private readonly usersRepository: UsersRepository
   ) { }
 
-  async signup(data: SignupAuthDto, res: any) {
+  async signup(data: SignupAuthDto, res: Response) {
     try {
       const { email, password } = data
       const user = await this.usersRepository.findOne({ email })
@@ -32,14 +33,16 @@ export class AuthsService {
 
       const accessToken = await this.signToken({ email: newUser.email, sub: newUser.user_id })
 
-      res.cookie("token", accessToken)
+      res.cookie("token", accessToken, {
+        httpOnly: false
+      })
       return { accessToken }
     } catch (error) {
       console.log(error);
     }
   }
 
-  async signin(data: SigninAuthDto, res: any) {
+  async signin(data: SigninAuthDto, res: Response) {
     try {
       const { email, password } = data
       console.log(email, password);
@@ -55,7 +58,9 @@ export class AuthsService {
         throw new HttpException('Password not match.', HttpStatus.BAD_REQUEST);
 
       const accessToken = await this.signToken({ email: user.email, sub: user.user_id })
-      res.cookie("token", accessToken)
+      res.cookie("token", accessToken, {
+        httpOnly: false
+      })
       return { accessToken }
     } catch (error) {
       console.log(error);
