@@ -34,8 +34,10 @@ export class AuthsService {
       const accessToken = await this.signToken({ email: newUser.email, sub: newUser.user_id })
 
       res.cookie("token", accessToken, {
-        httpOnly: false
+        httpOnly: false,
       })
+      console.log(res);
+      
       return { accessToken }
     } catch (error) {
       console.log(error);
@@ -59,8 +61,9 @@ export class AuthsService {
 
       const accessToken = await this.signToken({ email: user.email, sub: user.user_id })
       res.cookie("token", accessToken, {
-        httpOnly: false
+        httpOnly: false,
       })
+      console.log(res);
       return { accessToken }
     } catch (error) {
       console.log(error);
