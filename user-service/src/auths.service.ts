@@ -32,13 +32,6 @@ export class AuthsService {
       const newUser = await this.usersRepository.create({ ...data, user_id: `user_${this.uid.stamp(15)}`, password: hash })
 
       const accessToken = await this.signToken({ email: newUser.email, sub: newUser.user_id })
-
-      res.cookie("token", accessToken, {
-        httpOnly: false,
-        sameSite: 'none',
-        secure: true
-      })
-      console.log(res.cookie);
       
       return { accessToken }
     } catch (error) {
@@ -62,12 +55,7 @@ export class AuthsService {
         throw new HttpException('Password not match.', HttpStatus.BAD_REQUEST);
 
       const accessToken = await this.signToken({ email: user.email, sub: user.user_id })
-      res.cookie("token", accessToken, {
-        httpOnly: false,
-        sameSite: 'none',
-        secure: true
-      })
-      console.log(res.cookie);
+    
       return { accessToken }
     } catch (error) {
       console.log(error);

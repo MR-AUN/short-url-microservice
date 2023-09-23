@@ -7,7 +7,6 @@ import { UsersRepository } from './users.repository';
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) { }
   async me(userId: string) {
-    console.log(userId);
     
     const user = await this.usersRepository.findOne({ user_id: userId })
     if (!user) throw new NotFoundException("User not found.")
