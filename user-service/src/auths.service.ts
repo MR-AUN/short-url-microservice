@@ -36,6 +36,7 @@ export class AuthsService {
       res.cookie("token", accessToken, {
         httpOnly: false,
         sameSite: 'none',
+        secure: false
       })
       console.log(res.cookie);
       
@@ -64,6 +65,7 @@ export class AuthsService {
       res.cookie("token", accessToken, {
         httpOnly: false,
         sameSite: 'none',
+        secure: false
       })
       console.log(res.cookie);
       return { accessToken }
