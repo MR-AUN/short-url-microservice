@@ -35,7 +35,6 @@ export class AuthsService {
 
       res.cookie("token", accessToken, {
         httpOnly: false,
-        domain: "146.190.128.82",
       })
       console.log(res.cookie);
       
@@ -62,8 +61,7 @@ export class AuthsService {
 
       const accessToken = await this.signToken({ email: user.email, sub: user.user_id })
       res.cookie("token", accessToken, {
-        httpOnly: false,
-        domain: "146.190.128.82",
+        httpOnly: false
       })
       console.log(res.cookie);
       return { accessToken }
